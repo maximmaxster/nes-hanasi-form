@@ -1,0 +1,705 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl" id="html-root">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title data-he="טופס פרטי גורם המזמין אירוע" data-en="Event Organizer Details Form">טופס פרטי גורם המזמין אירוע</title>
+  <link href="https://fonts.googleapis.com/css2?family=David+Libre:wght@400;500;700&family=Frank+Ruhl+Libre:wght@400;700&family=Aref+Ruqaa&family=Source+Serif+4:wght@400;700&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --navy:   #0a2240;
+      --navy-light: #0d2d54;
+      --gold:   #c8a84b;
+      --white:  #ffffff;
+      --bg:     #f4f6f9;
+      --border: #d0d8e4;
+      --red:    #c0392b;
+      --radius: 10px;
+      --shadow: 0 4px 24px rgba(10,34,64,.13);
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'David', 'David Libre', serif;
+      font-size: 12px;
+      background: var(--bg);
+      color: var(--navy);
+      min-height: 100vh;
+    }
+    [lang="en"] body { font-family: 'Source Serif 4', 'David Libre', serif; }
+
+    /* ── HERO — logo centered ── */
+    .hero {
+      background: var(--navy);
+      color: var(--white);
+      text-align: center;
+      padding: 24px 24px 36px;
+      position: relative;
+    }
+
+    /* ── LANG SWITCHER — inside hero corner ── */
+    .lang-switcher {
+      position: absolute;
+      top: 14px;
+      left: 16px;
+      z-index: 10;
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+      user-select: none;
+    }
+    [dir="ltr"] .lang-switcher { left: auto; right: 16px; }
+    .lang-btn {
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      padding: 4px 10px;
+      border-radius: 50px;
+      font-size: .7rem;
+      font-weight: 500;
+      cursor: pointer;
+      border: 1px solid rgba(255,255,255,.25);
+      color: rgba(255,255,255,.6);
+      background: rgba(255,255,255,.08);
+      transition: all .2s;
+    }
+    .lang-btn:hover { color: var(--white); border-color: rgba(255,255,255,.5); }
+    .lang-btn.active {
+      background: rgba(255,255,255,.18);
+      border-color: rgba(255,255,255,.5);
+      color: var(--white);
+      font-weight: 700;
+    }
+    .flag { font-size: .88rem; }
+
+    /* Logo block — CENTERED */
+    .logo {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0;
+      margin-bottom: 20px;
+    }
+    .logo-emblem {
+      width: 160px;
+      height: 160px;
+    }
+    .logo-emblem img {
+      width: 160px;
+      height: 160px;
+      object-fit: fill;
+    }
+    .logo-text {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 2px;
+      margin-top: 6px;
+    }
+    .logo-he {
+      font-family: 'Frank Ruhl Libre', serif;
+      font-size: 1.6rem;
+      font-weight: 700;
+      color: var(--white);
+      letter-spacing: .06em;
+    }
+    .logo-ar {
+      font-family: 'Aref Ruqaa', serif;
+      font-size: 1.2rem;
+      color: rgba(255,255,255,.85);
+    }
+    .logo-en {
+      font-family: 'Source Serif 4', serif;
+      font-size: .72rem;
+      font-weight: 700;
+      letter-spacing: .14em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,.6);
+    }
+    .logo-divider {
+      width: 50px;
+      height: 1px;
+      background: var(--gold);
+      margin: 14px auto 0;
+      opacity: .6;
+    }
+
+
+    /* ── FORM CARD ── */
+    .form-wrapper {
+      max-width: 860px;
+      margin: 32px auto 60px;
+      padding: 0 16px;
+    }
+
+    form {
+      background: var(--white);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      overflow: hidden;
+    }
+
+    /* Section */
+    .section {
+      padding: 28px 36px;
+      border-bottom: 1px solid var(--border);
+    }
+    .section:last-of-type { border-bottom: none; }
+    .section-title {
+      font-size: 14px;
+      font-weight: 700;
+      font-family: 'David', 'David Libre', serif;
+      letter-spacing: .05em;
+      color: var(--navy);
+      opacity: .6;
+      margin-bottom: 20px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .section-title::after {
+      content: '';
+      flex: 1;
+      height: 1px;
+      background: var(--border);
+    }
+
+    /* Grid */
+    .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; }
+    .grid-1 { display: grid; grid-template-columns: 1fr; gap: 18px; }
+    @media (max-width: 600px) { .grid-2 { grid-template-columns: 1fr; } }
+
+    /* Field */
+    .field { display: flex; flex-direction: column; gap: 6px; }
+    .field label {
+      font-size: 14px;
+      font-weight: 700;
+      font-family: 'David', 'David Libre', serif;
+      color: var(--navy);
+    }
+    .field label .req { color: var(--red); margin-inline-start: 2px; }
+
+    .field input[type="text"],
+    .field input[type="email"],
+    .field input[type="date"],
+    .field input[type="tel"] {
+      width: 100%;
+      border: 1.5px solid var(--border);
+      border-radius: 7px;
+      padding: 11px 14px;
+      font-size: 12px;
+      font-family: 'David', 'David Libre', serif;
+      color: var(--navy);
+      background: #fafbfc;
+      transition: border-color .2s, box-shadow .2s;
+      outline: none;
+    }
+    .field input:focus {
+      border-color: var(--navy);
+      box-shadow: 0 0 0 3px rgba(10,34,64,.1);
+      background: var(--white);
+    }
+    .field input.error { border-color: var(--red); }
+    .field .error-msg {
+      font-size: .78rem;
+      color: var(--red);
+      display: none;
+    }
+    .field input.error + .error-msg,
+    .field input.error ~ .error-msg { display: block; }
+
+    /* Checkbox declaration */
+    .declaration-box {
+      background: #f0f4f9;
+      border: 1.5px solid var(--border);
+      border-radius: 8px;
+      padding: 18px 20px;
+    }
+    .declaration-text {
+      font-size: .92rem;
+      line-height: 1.75;
+      color: #2c3e50;
+      margin-bottom: 14px;
+    }
+    .checkbox-label {
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+      cursor: pointer;
+      font-size: .9rem;
+      font-weight: 600;
+      color: var(--navy);
+    }
+    .checkbox-label input[type="checkbox"] {
+      width: 18px;
+      height: 18px;
+      margin-top: 2px;
+      accent-color: var(--navy);
+      flex-shrink: 0;
+      cursor: pointer;
+    }
+
+    /* Submit */
+    .form-footer {
+      padding: 24px 36px;
+      background: #f8f9fb;
+      border-top: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      flex-wrap: wrap;
+    }
+    .required-note { font-size: .82rem; color: #666; }
+    .required-note span { color: var(--red); font-weight: 700; }
+
+    .btn-submit {
+      background: var(--navy);
+      color: var(--white);
+      border: none;
+      border-radius: 8px;
+      padding: 13px 40px;
+      font-size: 14px;
+      font-weight: 700;
+      font-family: 'David', 'David Libre', serif;
+      cursor: pointer;
+      transition: background .2s, transform .1s, box-shadow .2s;
+      box-shadow: 0 4px 12px rgba(10,34,64,.25);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .btn-submit:hover { background: var(--navy-light); box-shadow: 0 6px 18px rgba(10,34,64,.35); }
+    .btn-submit:active { transform: scale(.98); }
+    .btn-submit:disabled { opacity: .6; cursor: not-allowed; }
+
+    /* Success screen */
+    #success-screen {
+      display: none;
+      background: var(--white);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      padding: 64px 36px;
+      text-align: center;
+    }
+    .success-icon {
+      width: 72px;
+      height: 72px;
+      background: #e8f5e9;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 24px;
+    }
+    .success-icon svg { width: 40px; height: 40px; color: #2e7d32; }
+    #success-screen h2 { font-size: 1.6rem; margin-bottom: 10px; color: var(--navy); }
+    #success-screen p { color: #555; font-size: .97rem; line-height: 1.7; }
+
+    /* Error banner */
+    #error-banner {
+      display: none;
+      background: #fff3f3;
+      border: 1px solid #f5c6c6;
+      border-radius: 8px;
+      padding: 12px 18px;
+      margin: 0 36px 16px;
+      font-size: .88rem;
+      color: var(--red);
+    }
+
+    /* Spinner */
+    .spinner {
+      display: none;
+      width: 18px;
+      height: 18px;
+      border: 2px solid rgba(255,255,255,.4);
+      border-top-color: var(--white);
+      border-radius: 50%;
+      animation: spin .7s linear infinite;
+    }
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    .hero-subtitle {
+      font-size: .78rem;
+      letter-spacing: .14em;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 8px;
+      font-family: 'Source Serif 4', serif;
+    }
+    .hero h1 {
+      font-size: 22px;
+      font-weight: 700;
+      font-family: 'David', 'David Libre', serif;
+      margin-bottom: 10px;
+    }
+    .hero p {
+      font-size: 14px;
+      font-weight: 400;
+      color: rgba(255,255,255,.88);
+      max-width: 520px;
+      margin: 0 auto;
+      line-height: 1.8;
+    }
+  </style>
+</head>
+<body>
+
+<!-- ══════════ LANG SWITCHER (fixed corner) ══════════ -->
+<div class="lang-switcher" id="lang-switcher" role="group" aria-label="Language selector">
+  <div class="lang-btn active" id="btn-he" onclick="setLang('he')">
+    <span class="flag">🇮🇱</span> עברית
+  </div>
+  <div class="lang-btn" id="btn-en" onclick="setLang('en')">
+    <span class="flag">🇺🇸</span> English
+  </div>
+</div>
+
+<!-- ══════════ HERO — logo centered ══════════ -->
+<div class="hero">
+  <!-- Logo CENTERED -->
+  <div class="logo">
+    <div class="logo-emblem">
+      <img src="logo-emblem.png" alt="בית הנשיא" />
+    </div>
+    <div class="logo-text">
+      <div class="logo-he">בית הנשיא</div>
+      <div class="logo-ar">ديوان الرئيس</div>
+      <div class="logo-en">Office of the President</div>
+    </div>
+    <div class="logo-divider"></div>
+  </div>
+
+  <!-- Form title -->
+  <div class="hero-subtitle" id="hero-subtitle">טופס רשמי</div>
+  <h1 id="hero-title">פרטי גורם מזמין האירוע</h1>
+  <p id="hero-desc">על גורם מזמין האירוע למלא את כלל הפרטים שלהלן לאחר קבלת האישור לקיום האירוע,<br>מאגף טקסים ואירועים בית הנשיא</p>
+</div>
+
+<!-- ══════════ FORM ══════════ -->
+<div class="form-wrapper">
+  <div id="success-screen">
+    <div class="success-icon">
+      <svg fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M5 13l4 4L19 7"/></svg>
+    </div>
+    <h2 id="success-title">הטופס נשלח בהצלחה!</h2>
+    <p id="success-msg">תודה. הפרטים התקבלו ויישמרו במערכת.<br>ניצור איתך קשר בהקדם.</p>
+  </div>
+
+  <form id="event-form" novalidate>
+    <div id="error-banner" role="alert"></div>
+
+    <!-- §1 Event Details -->
+    <div class="section">
+      <div class="section-title" id="sec1-title">פרטי האירוע</div>
+      <div class="grid-2">
+        <div class="field">
+          <label for="event-name"><span id="lbl-event-name">שם האירוע</span><span class="req">*</span></label>
+          <input type="text" id="event-name" name="entry.1414315208" required autocomplete="off" />
+          <span class="error-msg" id="err-event-name">שדה חובה</span>
+        </div>
+        <div class="field">
+          <label for="event-date"><span id="lbl-event-date">תאריך האירוע</span><span class="req">*</span></label>
+          <input type="date" id="event-date" name="entry.2140407294" required />
+          <span class="error-msg" id="err-event-date">שדה חובה</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- §2 Organization -->
+    <div class="section">
+      <div class="section-title" id="sec2-title">פרטי הארגון</div>
+      <div class="grid-2">
+        <div class="field">
+          <label for="org-name"><span id="lbl-org-name">שם ארגון</span><span class="req">*</span></label>
+          <input type="text" id="org-name" name="entry.745442381" required />
+          <span class="error-msg" id="err-org-name">שדה חובה</span>
+        </div>
+        <div class="field">
+          <label for="contact-name"><span id="lbl-contact">שם איש הקשר</span><span class="req">*</span></label>
+          <input type="text" id="contact-name" name="entry.1204624917" required />
+          <span class="error-msg" id="err-contact">שדה חובה</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- §3 Payer Details -->
+    <div class="section">
+      <div class="section-title" id="sec3-title">פרטי גורם המשלם</div>
+      <div class="grid-2">
+        <div class="field">
+          <label for="payer-name"><span id="lbl-payer-name">שם פרטי + משפחה</span><span class="req">*</span></label>
+          <input type="text" id="payer-name" name="entry.430700613" required />
+          <span class="error-msg" id="err-payer-name">שדה חובה</span>
+        </div>
+        <div class="field">
+          <label for="payer-phone"><span id="lbl-payer-phone">מס' טלפון</span><span class="req">*</span></label>
+          <input type="tel" id="payer-phone" name="entry.1666567001" required dir="ltr" style="text-align:left" />
+          <span class="error-msg" id="err-payer-phone">שדה חובה</span>
+        </div>
+        <div class="field">
+          <label for="payer-email"><span id="lbl-payer-email">דואר אלקטרוני</span><span class="req">*</span></label>
+          <input type="email" id="payer-email" name="entry.1651672419" required dir="ltr" style="text-align:left" />
+          <span class="error-msg" id="err-payer-email">כתובת אימייל לא תקינה</span>
+        </div>
+        <div class="field">
+          <label for="payer-id"><span id="lbl-payer-id">מס' ח.פ / ע.מ</span><span class="req">*</span></label>
+          <input type="text" id="payer-id" name="entry.1897958739" required dir="ltr" style="text-align:left" />
+          <span class="error-msg" id="err-payer-id">שדה חובה</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- §4 Declaration -->
+    <div class="section">
+      <div class="section-title" id="sec4-title">הצהרה ואישור</div>
+      <div class="declaration-box">
+        <p class="declaration-text" id="declaration-text">
+          אני מצהיר/ה ומתחייב/ת לשלם את סך ההוצאות התפעוליות במלואם (הנובעות ישירות מקיום האירוע) זאת כתנאי לקיום האירוע.
+        </p>
+        <label class="checkbox-label">
+          <input type="checkbox" id="declaration-cb" name="entry.603597516" value="אני מצהיר/ה ומתחייב/ת לשלם את סך ההוצאות התפעוליות במלואם (הנובעות ישירות מקיום האירוע) זאת כתנאי לקיום האירוע" required />
+          <span id="lbl-declaration">אני מאשר/ת ומסכים/ה להצהרה לעיל</span>
+        </label>
+        <span class="error-msg" id="err-declaration" style="display:none;color:var(--red);font-size:.8rem;margin-top:6px;"></span>
+      </div>
+    </div>
+
+    <!-- Footer -->
+    <div class="form-footer">
+      <p class="required-note"><span>*</span> <span id="required-note-text">שדות חובה</span></p>
+      <button type="submit" class="btn-submit" id="submit-btn">
+        <span id="submit-text">שליחה</span>
+        <div class="spinner" id="submit-spinner"></div>
+      </button>
+    </div>
+  </form>
+</div>
+
+<!-- ══════════ SCRIPT ══════════ -->
+<script>
+// ── i18n strings ──
+const STRINGS = {
+  he: {
+    title:          'טופס פרטי גורם המזמין אירוע',
+    heroSubtitle:   'טופס רשמי',
+    heroTitle:      'פרטי גורם מזמין האירוע',
+    heroDesc:       'על גורם מזמין האירוע למלא את כלל הפרטים שלהלן לאחר קבלת האישור לקיום האירוע,<br>מאגף טקסים ואירועים, בית הנשיא',
+    sec1:           'פרטי האירוע',
+    sec2:           'פרטי הארגון',
+    sec3:           'פרטי גורם המשלם',
+    sec4:           'הצהרה ואישור',
+    lblEventName:   'שם האירוע',
+    lblEventDate:   'תאריך האירוע',
+    lblOrgName:     'שם ארגון',
+    lblContact:     'שם איש הקשר',
+    lblPayerName:   'שם פרטי + משפחה',
+    lblPayerPhone:  'מס׳ טלפון',
+    lblPayerEmail:  'דואר אלקטרוני',
+    lblPayerId:     'מס׳ ח.פ / ע.מ',
+    declarationText:'אני מצהיר/ה ומתחייב/ת לשלם את סך ההוצאות התפעוליות במלואם (הנובעות ישירות מקיום האירוע) זאת כתנאי לקיום האירוע.',
+    lblDeclaration: 'אני מאשר/ת ומסכים/ה להצהרה לעיל',
+    requiredNote:   'שדות חובה',
+    submitText:     'שליחה',
+    successTitle:   'הטופס נשלח בהצלחה!',
+    successMsg:     'תודה. הפרטים התקבלו ויישמרו במערכת.<br>ניצור איתך קשר בהקדם.',
+    errRequired:    'שדה חובה',
+    errEmail:       'כתובת אימייל לא תקינה',
+    errDeclaration: 'יש לאשר את ההצהרה',
+    errGeneral:     'אירעה שגיאה. אנא נסה שנית.',
+    logoTagline:    'נס הנשיא',
+  },
+  en: {
+    title:          'Event Organizer Details Form',
+    heroSubtitle:   'Official Form',
+    heroTitle:      'Event Organizer Details',
+    heroDesc:       'The event organizer must fill in all the details below after receiving approval for holding the event from the Ceremonies and Events Division, Office of the President.',
+    sec1:           'Event Details',
+    sec2:           'Organization Details',
+    sec3:           'Payer Details',
+    sec4:           'Declaration & Confirmation',
+    lblEventName:   'Event Name',
+    lblEventDate:   'Event Date',
+    lblOrgName:     'Organization Name',
+    lblContact:     'Contact Person',
+    lblPayerName:   'First & Last Name',
+    lblPayerPhone:  'Phone Number',
+    lblPayerEmail:  'Email Address',
+    lblPayerId:     'Company / VAT Number',
+    declarationText:'I hereby declare and commit to paying the full operational costs (arising directly from the event) as a condition for holding the event.',
+    lblDeclaration: 'I confirm and agree to the above declaration',
+    requiredNote:   'Required fields',
+    submitText:     'Submit',
+    successTitle:   'Form submitted successfully!',
+    successMsg:     'Thank you. Your details have been received and saved.<br>We will be in touch shortly.',
+    errRequired:    'Required field',
+    errEmail:       'Invalid email address',
+    errDeclaration: 'Please confirm the declaration',
+    errGeneral:     'An error occurred. Please try again.',
+    logoTagline:    'Nes HaNasi',
+  }
+};
+
+let currentLang = 'he';
+
+function setLang(lang) {
+  currentLang = lang;
+  const root = document.getElementById('html-root');
+  root.setAttribute('lang', lang);
+  root.setAttribute('dir', lang === 'he' ? 'rtl' : 'ltr');
+
+  const s = STRINGS[lang];
+  document.title = s.title;
+
+  document.getElementById('hero-subtitle').textContent   = s.heroSubtitle;
+  document.getElementById('hero-title').textContent      = s.heroTitle;
+  document.getElementById('hero-desc').innerHTML         = s.heroDesc;
+  document.getElementById('sec1-title').childNodes[0].textContent = s.sec1 + ' ';
+  document.getElementById('sec2-title').childNodes[0].textContent = s.sec2 + ' ';
+  document.getElementById('sec3-title').childNodes[0].textContent = s.sec3 + ' ';
+  document.getElementById('sec4-title').childNodes[0].textContent = s.sec4 + ' ';
+  document.getElementById('lbl-event-name').textContent  = s.lblEventName;
+  document.getElementById('lbl-event-date').textContent  = s.lblEventDate;
+  document.getElementById('lbl-org-name').textContent    = s.lblOrgName;
+  document.getElementById('lbl-contact').textContent     = s.lblContact;
+  document.getElementById('lbl-payer-name').textContent  = s.lblPayerName;
+  document.getElementById('lbl-payer-phone').textContent = s.lblPayerPhone;
+  document.getElementById('lbl-payer-email').textContent = s.lblPayerEmail;
+  document.getElementById('lbl-payer-id').textContent    = s.lblPayerId;
+  document.getElementById('declaration-text').textContent= s.declarationText;
+  document.getElementById('lbl-declaration').textContent = s.lblDeclaration;
+  document.getElementById('required-note-text').textContent = s.requiredNote;
+  document.getElementById('submit-text').textContent     = s.submitText;
+  document.getElementById('success-title').textContent   = s.successTitle;
+  document.getElementById('success-msg').innerHTML       = s.successMsg;
+
+  // Error messages – update placeholders
+  document.getElementById('err-event-name').textContent = s.errRequired;
+  document.getElementById('err-event-date').textContent = s.errRequired;
+  document.getElementById('err-org-name').textContent   = s.errRequired;
+  document.getElementById('err-contact').textContent    = s.errRequired;
+  document.getElementById('err-payer-name').textContent = s.errRequired;
+  document.getElementById('err-payer-phone').textContent= s.errRequired;
+  document.getElementById('err-payer-email').textContent= s.errEmail;
+  document.getElementById('err-payer-id').textContent   = s.errRequired;
+
+  // Active button
+  document.getElementById('btn-he').classList.toggle('active', lang === 'he');
+  document.getElementById('btn-en').classList.toggle('active', lang === 'en');
+}
+
+// ── Validation ──
+function validateForm() {
+  const s = STRINGS[currentLang];
+  let valid = true;
+
+  const fields = [
+    { id: 'event-name',   errId: 'err-event-name',   type: 'text'  },
+    { id: 'event-date',   errId: 'err-event-date',   type: 'text'  },
+    { id: 'org-name',     errId: 'err-org-name',     type: 'text'  },
+    { id: 'contact-name', errId: 'err-contact',      type: 'text'  },
+    { id: 'payer-name',   errId: 'err-payer-name',   type: 'text'  },
+    { id: 'payer-phone',  errId: 'err-payer-phone',  type: 'text'  },
+    { id: 'payer-email',  errId: 'err-payer-email',  type: 'email' },
+    { id: 'payer-id',     errId: 'err-payer-id',     type: 'text'  },
+  ];
+
+  fields.forEach(f => {
+    const input = document.getElementById(f.id);
+    const err   = document.getElementById(f.errId);
+    input.classList.remove('error');
+    if (!input.value.trim()) {
+      input.classList.add('error');
+      err.style.display = 'block';
+      valid = false;
+    } else if (f.type === 'email' && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(input.value)) {
+      input.classList.add('error');
+      err.style.display = 'block';
+      valid = false;
+    } else {
+      err.style.display = 'none';
+    }
+  });
+
+  const cb = document.getElementById('declaration-cb');
+  const cbErr = document.getElementById('err-declaration');
+  if (!cb.checked) {
+    cbErr.textContent = s.errDeclaration;
+    cbErr.style.display = 'block';
+    valid = false;
+  } else {
+    cbErr.style.display = 'none';
+  }
+
+  return valid;
+}
+
+// ── Submit ──
+const FORM_ACTION = 'https://docs.google.com/forms/d/e/1FAIpQLSePIDTfLw2fgpVRXiNFmuuW7QWL8CKGy4EIzCFLTo5Fq8g7vg/formResponse';
+
+document.getElementById('event-form').addEventListener('submit', async function(e) {
+  e.preventDefault();
+  document.getElementById('error-banner').style.display = 'none';
+
+  if (!validateForm()) {
+    // Scroll to first error
+    const firstErr = this.querySelector('.error');
+    if (firstErr) firstErr.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    return;
+  }
+
+  const btn     = document.getElementById('submit-btn');
+  const spinner = document.getElementById('submit-spinner');
+  const txtEl   = document.getElementById('submit-text');
+  btn.disabled  = true;
+  spinner.style.display = 'block';
+  txtEl.style.display   = 'none';
+
+  const data = new FormData(this);
+
+  try {
+    await fetch(FORM_ACTION, {
+      method: 'POST',
+      body: data,
+      mode: 'no-cors'   // Google Forms doesn't send CORS headers; data IS submitted
+    });
+    // Show success
+    this.style.display = 'none';
+    document.getElementById('success-screen').style.display = 'block';
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  } catch (err) {
+    btn.disabled = false;
+    spinner.style.display = 'none';
+    txtEl.style.display   = '';
+    const banner = document.getElementById('error-banner');
+    banner.textContent    = STRINGS[currentLang].errGeneral;
+    banner.style.display  = 'block';
+  }
+});
+
+// Clear error on input
+document.querySelectorAll('input').forEach(input => {
+  input.addEventListener('input', () => {
+    input.classList.remove('error');
+    const errEl = document.getElementById('err-' + input.id.replace('payer-','payer-').replace('event-','event-').replace('org-name','org-name').replace('contact-name','contact'));
+    // simpler:
+    const map = {
+      'event-name':   'err-event-name',
+      'event-date':   'err-event-date',
+      'org-name':     'err-org-name',
+      'contact-name': 'err-contact',
+      'payer-name':   'err-payer-name',
+      'payer-phone':  'err-payer-phone',
+      'payer-email':  'err-payer-email',
+      'payer-id':     'err-payer-id',
+    };
+    if (map[input.id]) {
+      document.getElementById(map[input.id]).style.display = 'none';
+    }
+  });
+});
+</script>
+</body>
+</html>
